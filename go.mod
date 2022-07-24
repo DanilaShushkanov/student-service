@@ -1,4 +1,4 @@
-module github.com/danilashushkanov/student
+module github.com/danilashushkanov/student-service
 
 go 1.17
 
