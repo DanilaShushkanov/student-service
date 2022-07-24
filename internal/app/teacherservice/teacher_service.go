@@ -1,8 +1,8 @@
 package teacherservice
 
 import (
-	"github.com/danilashushkanov/student/internal/repository"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/danilashushkanov/student-service/internal/repository"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
 

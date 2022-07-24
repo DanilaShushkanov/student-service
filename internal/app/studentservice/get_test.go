@@ -2,10 +2,10 @@ package studentservice
 
 import (
 	"errors"
-	"github.com/danilashushkanov/student/internal/app/studentservice/adapters"
-	"github.com/danilashushkanov/student/internal/model"
-	"github.com/danilashushkanov/student/internal/repository"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/danilashushkanov/student-service/internal/app/studentservice/adapters"
+	"github.com/danilashushkanov/student-service/internal/model"
+	"github.com/danilashushkanov/student-service/internal/repository"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

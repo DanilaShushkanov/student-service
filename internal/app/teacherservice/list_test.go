@@ -2,9 +2,9 @@ package teacherservice
 
 import (
 	"errors"
-	"github.com/danilashushkanov/student/internal/app/teacherservice/adapters"
-	"github.com/danilashushkanov/student/internal/model"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/danilashushkanov/student-service/internal/app/teacherservice/adapters"
+	"github.com/danilashushkanov/student-service/internal/model"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

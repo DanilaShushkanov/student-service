@@ -2,7 +2,7 @@ package studentservice
 
 import (
 	"errors"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

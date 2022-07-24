@@ -3,9 +3,9 @@ package studentservice
 import (
 	"errors"
 	"fmt"
-	"github.com/danilashushkanov/student/internal/app/studentservice/adapters"
-	"github.com/danilashushkanov/student/internal/model"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/danilashushkanov/student-service/internal/app/studentservice/adapters"
+	"github.com/danilashushkanov/student-service/internal/model"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"

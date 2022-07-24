@@ -3,9 +3,9 @@ package teacherservice
 import (
 	"errors"
 	"fmt"
-	"github.com/danilashushkanov/student/internal/app/teacherservice/adapters"
-	"github.com/danilashushkanov/student/internal/model"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/danilashushkanov/student-service/internal/app/teacherservice/adapters"
+	"github.com/danilashushkanov/student-service/internal/model"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
