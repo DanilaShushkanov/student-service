@@ -1,0 +1,57 @@
+package studentservice
+
+import (
+	"errors"
+	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/stretchr/testify/assert"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"testing"
+)
+
+func TestDeleteStudent(t *testing.T) {
+	t.Run("validation Error", func(t *testing.T) {
+		te := newTestEnv(t)
+
+		req := &api.GetStudentRequest{
+			Id: 0,
+		}
+
+		resource, err := te.studentService.GetStudent(te.ctx, req)
+		assert.Error(t, err)
+		assert.Equal(t, codes.InvalidArgument, status.Code(err))
+		var expectedResponse *api.Student
+		assert.Equal(t, expectedResponse, resource)
+	})
+
+	t.Run("repository error", func(t *testing.T) {
+		te := newTestEnv(t)
+
+		req := &api.GetStudentRequest{
+			Id: 1,
+		}
+
+		te.studentRepository.EXPECT().Delete(te.ctx, req.GetId()).Return(errors.New("any catalog error"))
+
+		resource, err := te.studentService.DeleteStudent(te.ctx, req)
+		assert.Error(t, err)
+		assert.Equal(t, codes.Internal.String(), status.Code(err).String())
+		var expectedResponse *api.SimpleResponse
+		assert.Equal(t, expectedResponse, resource)
+	})
+
+	t.Run("success", func(t *testing.T) {
+		te := newTestEnv(t)
+
+		req := &api.GetStudentRequest{
+			Id: 1,
+		}
+
+		te.studentRepository.EXPECT().Delete(te.ctx, req.GetId()).Return(nil)
+
+		resource, err := te.studentService.DeleteStudent(te.ctx, req)
+		assert.NoError(t, err)
+		expectedResponse := &api.SimpleResponse{}
+		assert.Equal(t, expectedResponse, resource)
+	})
+}
