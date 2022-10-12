@@ -47,7 +47,7 @@ func (s *StudentRepositoryImpl) Create(ctx context.Context, student *model.Stude
 		return nil, fmt.Errorf("не удалось создать Insert Student: %w", err)
 	}
 
-	var id int64
+	var id string
 	if err = tx.QueryRowxContext(ctx, query).Scan(&id); err != nil {
 		return nil, fmt.Errorf("не удалось выполнить запрос на создание student: %w", err)
 	}
@@ -118,7 +118,7 @@ func (s *StudentRepositoryImpl) List(ctx context.Context, filter *StudentListFil
 	return studentList, nil
 }
 
-func (s *StudentRepositoryImpl) Get(ctx context.Context, studentID int64) (*model.Student, error) {
+func (s *StudentRepositoryImpl) Get(ctx context.Context, studentID string) (*model.Student, error) {
 	query, _, err := goqu.From(studentTName).Where(
 		goqu.I("id").Eq(studentID),
 	).ToSQL()
@@ -153,8 +153,8 @@ func (s *StudentRepositoryImpl) loadNestedObjects(ctx context.Context, students 
 }
 
 func (s *StudentRepositoryImpl) fillTeachers(ctx context.Context, students []*model.Student) error {
-	studentIds := make([]int64, 0, len(students))
-	studentMap := make(map[int64]*model.Student)
+	studentIds := make([]string, 0, len(students))
+	studentMap := make(map[string]*model.Student)
 	for _, student := range students {
 		studentIds = append(studentIds, student.ID)
 		studentMap[student.ID] = student
@@ -231,7 +231,7 @@ func (s *StudentRepositoryImpl) updateNestedObjects(ctx context.Context, student
 	return nil
 }
 
-func (s *StudentRepositoryImpl) Delete(ctx context.Context, studentID int64) error {
+func (s *StudentRepositoryImpl) Delete(ctx context.Context, studentID string) error {
 	tx, err := s.db.BeginTxx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("error transaction: %w", err)

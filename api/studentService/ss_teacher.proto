@@ -13,24 +13,24 @@ service TeacherService{
 message CreateTeacherRequest {
   PositionType position_type = 1;
   string full_name = 2;
-  int64 student_id = 3;
+  string student_id = 3;
 }
 
 message Teacher {
-  int64 id = 1;
+  string id = 1;
   PositionType position_type = 2;
   string full_name = 3;
-  int64 student_id = 4;
+  string student_id = 4;
 }
 
 message UpdateTeacherRequest {
-  int64 id = 1;
+  string id = 1;
   PositionType position_type = 2;
   string full_name = 3;
 }
 
 message ListTeacherRequest {
-  repeated int64 teacher_ids = 1;
+  repeated string teacher_ids = 1;
 }
 
 message ListTeacherResponse {

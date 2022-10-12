@@ -23,7 +23,7 @@ func NewTeacherRepository(db *sqlx.DB) *TeacherRepositoryImpl {
 	}
 }
 
-func (t *TeacherRepositoryImpl) Get(ctx context.Context, teacherID int64) (*model.Teacher, error) {
+func (t *TeacherRepositoryImpl) Get(ctx context.Context, teacherID string) (*model.Teacher, error) {
 	query, _, err := goqu.From(teacherTName).Where(
 		goqu.I("id").Eq(teacherID),
 	).ToSQL()
@@ -83,7 +83,7 @@ func (t *TeacherRepositoryImpl) Create(ctx context.Context, teachers []*model.Te
 	}
 
 	teachersList, err := t.List(ctx, &TeacherListFilter{
-		IDList:    []int64{teachers[0].StudentID},
+		IDList:    []string{teachers[0].StudentID},
 		FieldName: "student_id",
 	})
 	if err != nil {
@@ -132,7 +132,7 @@ func (t *TeacherRepositoryImpl) Update(ctx context.Context, teacher *model.Teach
 	return teacher, nil
 }
 
-func (t *TeacherRepositoryImpl) UpdateTeachers(ctx context.Context, studentID int64, teachers []*model.Teacher) ([]*model.Teacher, error) {
+func (t *TeacherRepositoryImpl) UpdateTeachers(ctx context.Context, studentID string, teachers []*model.Teacher) ([]*model.Teacher, error) {
 	err := t.DeleteByStudentID(ctx, studentID)
 	if err != nil {
 		return nil, fmt.Errorf("не удалось удалить вложенные объекты: %w", err)
@@ -148,7 +148,7 @@ func (t *TeacherRepositoryImpl) UpdateTeachers(ctx context.Context, studentID in
 	return teachers, nil
 }
 
-func (t *TeacherRepositoryImpl) DeleteByStudentID(ctx context.Context, studentID int64) error {
+func (t *TeacherRepositoryImpl) DeleteByStudentID(ctx context.Context, studentID string) error {
 	tx, err := t.db.BeginTxx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("error transaction: %w", err)
@@ -181,7 +181,7 @@ func (t *TeacherRepositoryImpl) DeleteByStudentID(ctx context.Context, studentID
 }
 
 type TeacherListFilter struct {
-	IDList    []int64
+	IDList    []string
 	FieldName string
 }
 

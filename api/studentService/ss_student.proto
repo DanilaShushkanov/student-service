@@ -23,11 +23,11 @@ message CreateStudentRequest {
 }
 
 message GetStudentRequest {
-  int64 id = 1;
+  string id = 1;
 }
 
 message Student {
-  int64 id = 1;
+  string id = 1;
   string fullName = 2;
   int64 age = 3;
   int64 salary = 4;
@@ -35,7 +35,7 @@ message Student {
 }
 
 message ListStudentRequest {
-  repeated int64 student_ids = 1;
+  repeated string student_ids = 1;
 }
 
 message ListStudentResponse {
@@ -43,7 +43,7 @@ message ListStudentResponse {
 }
 
 message UpdateStudentRequest {
-  int64 id = 1;
+  string id = 1;
   string full_name = 2;
   int64 age = 3;
   int64 salary = 4;
