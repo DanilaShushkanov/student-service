@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"github.com/danilashushkanov/student/internal/model"
+	"github.com/danilashushkanov/student-service/internal/model"
 )
 
 type StudentRepository interface {

@@ -2,8 +2,8 @@ package bootstrap
 
 import (
 	"fmt"
-	"github.com/danilashushkanov/student/internal/closer"
-	"github.com/danilashushkanov/student/internal/config"
+	"github.com/danilashushkanov/student-service/internal/closer"
+	"github.com/danilashushkanov/student-service/internal/config"
 	_ "github.com/jackc/pgx/v4/stdlib" // необходим из-за драйвера pgx
 	"github.com/jmoiron/sqlx"
 )

@@ -8,7 +8,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	model "github.com/danilashushkanov/student/internal/model"
+	model "github.com/danilashushkanov/student-service/internal/model"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -51,7 +51,7 @@ func (mr *MockStudentRepositoryMockRecorder) Create(arg0, arg1 interface{}) *gom
 }
 
 // Delete mocks base method.
-func (m *MockStudentRepository) Delete(arg0 context.Context, arg1 int64) error {
+func (m *MockStudentRepository) Delete(arg0 context.Context, arg1 string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", arg0, arg1)
 	ret0, _ := ret[0].(error)
@@ -65,7 +65,7 @@ func (mr *MockStudentRepositoryMockRecorder) Delete(arg0, arg1 interface{}) *gom
 }
 
 // Get mocks base method.
-func (m *MockStudentRepository) Get(arg0 context.Context, arg1 int64) (*model.Student, error) {
+func (m *MockStudentRepository) Get(arg0 context.Context, arg1 string) (*model.Student, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", arg0, arg1)
 	ret0, _ := ret[0].(*model.Student)
@@ -148,7 +148,7 @@ func (mr *MockTeacherRepositoryMockRecorder) Create(arg0, arg1 interface{}) *gom
 }
 
 // DeleteByStudentID mocks base method.
-func (m *MockTeacherRepository) DeleteByStudentID(arg0 context.Context, arg1 int64) error {
+func (m *MockTeacherRepository) DeleteByStudentID(arg0 context.Context, arg1 string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteByStudentID", arg0, arg1)
 	ret0, _ := ret[0].(error)
@@ -162,7 +162,7 @@ func (mr *MockTeacherRepositoryMockRecorder) DeleteByStudentID(arg0, arg1 interf
 }
 
 // Get mocks base method.
-func (m *MockTeacherRepository) Get(arg0 context.Context, arg1 int64) (*model.Teacher, error) {
+func (m *MockTeacherRepository) Get(arg0 context.Context, arg1 string) (*model.Teacher, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", arg0, arg1)
 	ret0, _ := ret[0].(*model.Teacher)
@@ -207,7 +207,7 @@ func (mr *MockTeacherRepositoryMockRecorder) Update(arg0, arg1 interface{}) *gom
 }
 
 // UpdateTeachers mocks base method.
-func (m *MockTeacherRepository) UpdateTeachers(arg0 context.Context, arg1 int64, arg2 []*model.Teacher) ([]*model.Teacher, error) {
+func (m *MockTeacherRepository) UpdateTeachers(arg0 context.Context, arg1 string, arg2 []*model.Teacher) ([]*model.Teacher, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateTeachers", arg0, arg1, arg2)
 	ret0, _ := ret[0].([]*model.Teacher)

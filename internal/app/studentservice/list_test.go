@@ -2,9 +2,10 @@ package studentservice
 
 import (
 	"errors"
-	"github.com/danilashushkanov/student/internal/app/studentservice/adapters"
-	"github.com/danilashushkanov/student/internal/model"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/danilashushkanov/student-service/internal/app/studentservice/adapters"
+	"github.com/danilashushkanov/student-service/internal/model"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -16,7 +17,7 @@ func TestListStudent(t *testing.T) {
 		te := newTestEnv(t)
 
 		req := &api.ListStudentRequest{
-			StudentIds: []int64{},
+			StudentIds: []string{},
 		}
 
 		students, err := te.studentService.ListStudents(te.ctx, req)
@@ -29,8 +30,9 @@ func TestListStudent(t *testing.T) {
 	t.Run("repository Error", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
 		req := &api.ListStudentRequest{
-			StudentIds: []int64{148},
+			StudentIds: []string{studentID},
 		}
 
 		expectedMockStudentIds := adapters.ListFilterStudentFromPb(req)
@@ -46,14 +48,15 @@ func TestListStudent(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
 		req := &api.ListStudentRequest{
-			StudentIds: []int64{1},
+			StudentIds: []string{studentID},
 		}
 
 		expectedMockStudentIds := adapters.ListFilterStudentFromPb(req)
 		modelStudents := []*model.Student{
 			{
-				ID:       1,
+				ID:       studentID,
 				FullName: "Павел Жирнов",
 				Age:      19,
 				Salary:   12345,

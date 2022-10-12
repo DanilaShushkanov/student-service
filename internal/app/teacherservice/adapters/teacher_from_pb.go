@@ -1,9 +1,9 @@
 package adapters
 
 import (
-	"github.com/danilashushkanov/student/internal/model"
-	"github.com/danilashushkanov/student/internal/repository"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/danilashushkanov/student-service/internal/model"
+	"github.com/danilashushkanov/student-service/internal/repository"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	"strings"
 )
 

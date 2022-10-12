@@ -2,7 +2,7 @@ package teacherservice
 
 import (
 	"context"
-	"github.com/danilashushkanov/student/internal/repository"
+	"github.com/danilashushkanov/student-service/internal/repository"
 	"github.com/golang/mock/gomock"
 	"testing"
 )

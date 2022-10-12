@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"github.com/caarlos0/env"
-	"github.com/danilashushkanov/student/internal/app"
-	"github.com/danilashushkanov/student/internal/config"
+	"github.com/danilashushkanov/student-service/internal/app"
+	"github.com/danilashushkanov/student-service/internal/config"
 	"github.com/joho/godotenv"
 	"log"
 )

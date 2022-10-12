@@ -2,10 +2,11 @@ package studentservice
 
 import (
 	"errors"
-	"github.com/danilashushkanov/student/internal/app/studentservice/adapters"
-	"github.com/danilashushkanov/student/internal/model"
-	"github.com/danilashushkanov/student/internal/repository"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/danilashushkanov/student-service/internal/app/studentservice/adapters"
+	"github.com/danilashushkanov/student-service/internal/model"
+	"github.com/danilashushkanov/student-service/internal/repository"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -17,7 +18,7 @@ func TestGetStudent(t *testing.T) {
 		te := newTestEnv(t)
 
 		req := &api.GetStudentRequest{
-			Id: 0,
+			Id: "",
 		}
 
 		resource, err := te.studentService.GetStudent(te.ctx, req)
@@ -30,8 +31,9 @@ func TestGetStudent(t *testing.T) {
 	t.Run("repository Error", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
 		req := &api.GetStudentRequest{
-			Id: 1,
+			Id: studentID,
 		}
 
 		te.studentRepository.EXPECT().Get(te.ctx, req.GetId()).Return(nil, errors.New("any catalog error"))
@@ -46,8 +48,9 @@ func TestGetStudent(t *testing.T) {
 	t.Run("student not found", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
 		req := &api.GetStudentRequest{
-			Id: 94,
+			Id: studentID,
 		}
 
 		te.studentRepository.EXPECT().Get(te.ctx, req.GetId()).Return(nil, repository.ErrEntityNotFound)
@@ -62,12 +65,13 @@ func TestGetStudent(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
 		req := &api.GetStudentRequest{
-			Id: 1,
+			Id: studentID,
 		}
 
 		modelStudent := &model.Student{
-			ID:       2,
+			ID:       studentID,
 			FullName: "Павел Жирнов",
 			Age:      18,
 			Salary:   123425,

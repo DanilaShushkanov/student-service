@@ -2,8 +2,8 @@ package teacherservice
 
 import (
 	"context"
-	"github.com/danilashushkanov/student/internal/app/teacherservice/adapters"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/danilashushkanov/student-service/internal/app/teacherservice/adapters"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

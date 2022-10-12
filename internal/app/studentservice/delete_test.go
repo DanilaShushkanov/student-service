@@ -2,7 +2,8 @@ package studentservice
 
 import (
 	"errors"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -14,7 +15,7 @@ func TestDeleteStudent(t *testing.T) {
 		te := newTestEnv(t)
 
 		req := &api.GetStudentRequest{
-			Id: 0,
+			Id: "",
 		}
 
 		resource, err := te.studentService.GetStudent(te.ctx, req)
@@ -27,8 +28,9 @@ func TestDeleteStudent(t *testing.T) {
 	t.Run("repository error", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
 		req := &api.GetStudentRequest{
-			Id: 1,
+			Id: studentID,
 		}
 
 		te.studentRepository.EXPECT().Delete(te.ctx, req.GetId()).Return(errors.New("any catalog error"))
@@ -43,8 +45,9 @@ func TestDeleteStudent(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
 		req := &api.GetStudentRequest{
-			Id: 1,
+			Id: studentID,
 		}
 
 		te.studentRepository.EXPECT().Delete(te.ctx, req.GetId()).Return(nil)

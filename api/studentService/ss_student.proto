@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/danilashushkanov/student/pkg/studentServiceApi;student";
+option go_package = "github.com/danilashushkanov/student-service/pkg/studentServiceApi;student";
 
 package student;
 

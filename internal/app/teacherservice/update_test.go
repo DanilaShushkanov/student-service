@@ -2,9 +2,10 @@ package teacherservice
 
 import (
 	"errors"
-	"github.com/danilashushkanov/student/internal/app/teacherservice/adapters"
-	"github.com/danilashushkanov/student/internal/model"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/danilashushkanov/student-service/internal/app/teacherservice/adapters"
+	"github.com/danilashushkanov/student-service/internal/model"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -16,7 +17,7 @@ func TestUpdateTeacher(t *testing.T) {
 		te := newTestEnv(t)
 
 		req := &api.UpdateTeacherRequest{
-			Id:           0,
+			Id:           "",
 			FullName:     "",
 			PositionType: 0,
 		}
@@ -31,8 +32,9 @@ func TestUpdateTeacher(t *testing.T) {
 	t.Run("repository error", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		teacherID := uuid.New().String()
 		req := &api.UpdateTeacherRequest{
-			Id:           1,
+			Id:           teacherID,
 			FullName:     "Паша Жирнов",
 			PositionType: 1,
 		}
@@ -50,18 +52,20 @@ func TestUpdateTeacher(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		teacherID := uuid.New().String()
+		studentID := uuid.New().String()
 		req := &api.UpdateTeacherRequest{
-			Id:           1,
+			Id:           teacherID,
 			FullName:     "Паша Жирнов",
 			PositionType: 1,
 		}
 
 		expectedMockTeacher := adapters.UpdateTeacherFromPb(req)
 		modelTeacher := &model.Teacher{
-			ID:           17,
+			ID:           teacherID,
 			FullName:     "name",
 			PositionType: 1,
-			StudentID:    1,
+			StudentID:    studentID,
 		}
 
 		te.teacherRepository.EXPECT().Update(te.ctx, expectedMockTeacher).Return(modelTeacher, nil)

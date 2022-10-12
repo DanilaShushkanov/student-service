@@ -3,10 +3,11 @@ package studentservice
 import (
 	"errors"
 	"fmt"
-	"github.com/danilashushkanov/student/internal/app/studentservice/adapters"
-	"github.com/danilashushkanov/student/internal/model"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/danilashushkanov/student-service/internal/app/studentservice/adapters"
+	"github.com/danilashushkanov/student-service/internal/model"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -25,7 +26,7 @@ func TestCreateStudent(t *testing.T) {
 				{
 					FullName:     "",
 					PositionType: 11,
-					StudentId:    0,
+					StudentId:    "",
 				},
 			},
 		}
@@ -40,6 +41,8 @@ func TestCreateStudent(t *testing.T) {
 	t.Run("repository Error", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
+
 		req := &api.CreateStudentRequest{
 			FullName: "name",
 			Age:      12,
@@ -48,7 +51,7 @@ func TestCreateStudent(t *testing.T) {
 				{
 					FullName:     "name",
 					PositionType: 1,
-					StudentId:    1,
+					StudentId:    studentID,
 				},
 			},
 		}
@@ -66,6 +69,9 @@ func TestCreateStudent(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
+		teacherID := uuid.New().String()
+
 		req := &api.CreateStudentRequest{
 			FullName: "name",
 			Age:      12,
@@ -74,23 +80,23 @@ func TestCreateStudent(t *testing.T) {
 				{
 					FullName:     "name",
 					PositionType: 1,
-					StudentId:    1,
+					StudentId:    studentID,
 				},
 			},
 		}
 
 		expectedMockStudent := adapters.CreateStudentFromPb(req)
 		modelStudent := &model.Student{
-			ID:       17,
+			ID:       studentID,
 			FullName: "name",
 			Age:      12,
 			Salary:   123123,
 			Teachers: []*model.Teacher{
 				{
-					ID:           1,
+					ID:           teacherID,
 					FullName:     "name",
 					PositionType: 1,
-					StudentID:    1,
+					StudentID:    studentID,
 				},
 			},
 		}
@@ -109,6 +115,8 @@ func TestValidateCreateStudentRequest(t *testing.T) {
 		req *api.CreateStudentRequest
 	}
 
+	studentID := uuid.New().String()
+
 	tests := []struct {
 		name       string
 		args       args
@@ -126,7 +134,7 @@ func TestValidateCreateStudentRequest(t *testing.T) {
 						{
 							FullName:     "name",
 							PositionType: 1,
-							StudentId:    1,
+							StudentId:    studentID,
 						},
 					},
 				},
@@ -145,7 +153,7 @@ func TestValidateCreateStudentRequest(t *testing.T) {
 						{
 							FullName:     "name",
 							PositionType: 1,
-							StudentId:    1,
+							StudentId:    studentID,
 						},
 					},
 				},
@@ -164,7 +172,7 @@ func TestValidateCreateStudentRequest(t *testing.T) {
 						{
 							FullName:     "name",
 							PositionType: 1,
-							StudentId:    1,
+							StudentId:    studentID,
 						},
 					},
 				},
@@ -183,7 +191,7 @@ func TestValidateCreateStudentRequest(t *testing.T) {
 						{
 							FullName:     "",
 							PositionType: 1,
-							StudentId:    1,
+							StudentId:    studentID,
 						},
 					},
 				},
@@ -202,7 +210,7 @@ func TestValidateCreateStudentRequest(t *testing.T) {
 						{
 							FullName:     "",
 							PositionType: 11,
-							StudentId:    1,
+							StudentId:    studentID,
 						},
 					},
 				},
@@ -221,7 +229,7 @@ func TestValidateCreateStudentRequest(t *testing.T) {
 						{
 							FullName:     "",
 							PositionType: 11,
-							StudentId:    0,
+							StudentId:    "",
 						},
 					},
 				},

@@ -2,9 +2,10 @@ package teacherservice
 
 import (
 	"errors"
-	"github.com/danilashushkanov/student/internal/app/teacherservice/adapters"
-	"github.com/danilashushkanov/student/internal/model"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/danilashushkanov/student-service/internal/app/teacherservice/adapters"
+	"github.com/danilashushkanov/student-service/internal/model"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -16,7 +17,7 @@ func TestListTeacher(t *testing.T) {
 		te := newTestEnv(t)
 
 		req := &api.ListTeacherRequest{
-			TeacherIds: []int64{},
+			TeacherIds: []string{},
 		}
 
 		teachers, err := te.teacherService.ListTeachers(te.ctx, req)
@@ -29,8 +30,9 @@ func TestListTeacher(t *testing.T) {
 	t.Run("repository Error", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		teacherID := uuid.New().String()
 		req := &api.ListTeacherRequest{
-			TeacherIds: []int64{1},
+			TeacherIds: []string{teacherID},
 		}
 
 		expectedMockStudentIds := adapters.ListFilterTeacherFromPb(req)
@@ -46,13 +48,14 @@ func TestListTeacher(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		teacherID := uuid.New().String()
 		req := &api.ListTeacherRequest{
-			TeacherIds: []int64{1},
+			TeacherIds: []string{teacherID},
 		}
 		expectedMockTeacherIds := adapters.ListFilterTeacherFromPb(req)
 		modelTeachers := []*model.Teacher{
 			{
-				ID:           1,
+				ID:           teacherID,
 				FullName:     "name",
 				PositionType: 1,
 			},

@@ -3,10 +3,11 @@ package teacherservice
 import (
 	"errors"
 	"fmt"
-	"github.com/danilashushkanov/student/internal/app/teacherservice/adapters"
-	"github.com/danilashushkanov/student/internal/model"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/danilashushkanov/student-service/internal/app/teacherservice/adapters"
+	"github.com/danilashushkanov/student-service/internal/model"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -17,10 +18,11 @@ func TestCreateTeacher(t *testing.T) {
 	t.Run("validation error", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
 		req := &api.CreateTeacherRequest{
 			PositionType: 0,
 			FullName:     "",
-			StudentId:    0,
+			StudentId:    studentID,
 		}
 
 		teacher, err := te.teacherService.CreateTeacher(te.ctx, req)
@@ -33,10 +35,11 @@ func TestCreateTeacher(t *testing.T) {
 	t.Run("repository error", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
 		req := &api.CreateTeacherRequest{
 			FullName:     "name",
 			PositionType: 1,
-			StudentId:    1,
+			StudentId:    studentID,
 		}
 
 		expectedMockTeacher := adapters.CreateTeacherFromPb(req)
@@ -52,18 +55,20 @@ func TestCreateTeacher(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
+		teacherID := uuid.New().String()
 		req := &api.CreateTeacherRequest{
 			FullName:     "name",
 			PositionType: 1,
-			StudentId:    1,
+			StudentId:    studentID,
 		}
 		expectedMockTeacher := adapters.CreateTeacherFromPb(req)
 		modelTeachers := []*model.Teacher{
 			{
-				ID:           1,
+				ID:           teacherID,
 				FullName:     "name",
 				PositionType: 1,
-				StudentID:    1,
+				StudentID:    studentID,
 			},
 		}
 
@@ -81,6 +86,8 @@ func TestValidateCreateTeacherRequest(t *testing.T) {
 		req *api.CreateTeacherRequest
 	}
 
+	studentID := uuid.New().String()
+
 	tests := []struct {
 		name       string
 		args       args
@@ -93,7 +100,7 @@ func TestValidateCreateTeacherRequest(t *testing.T) {
 				&api.CreateTeacherRequest{
 					FullName:     "",
 					PositionType: 1,
-					StudentId:    1,
+					StudentId:    studentID,
 				},
 			},
 			errorField: "full_name",
@@ -105,7 +112,7 @@ func TestValidateCreateTeacherRequest(t *testing.T) {
 				&api.CreateTeacherRequest{
 					FullName:     "name",
 					PositionType: 134,
-					StudentId:    1,
+					StudentId:    studentID,
 				},
 			},
 			errorField: "position_type",
@@ -117,7 +124,7 @@ func TestValidateCreateTeacherRequest(t *testing.T) {
 				&api.CreateTeacherRequest{
 					FullName:     "name",
 					PositionType: 1,
-					StudentId:    0,
+					StudentId:    "",
 				},
 			},
 			errorField: "student_id",

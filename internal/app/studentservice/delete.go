@@ -2,7 +2,7 @@ package studentservice
 
 import (
 	"context"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

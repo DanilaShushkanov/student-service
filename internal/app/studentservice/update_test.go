@@ -2,9 +2,10 @@ package studentservice
 
 import (
 	"errors"
-	"github.com/danilashushkanov/student/internal/app/studentservice/adapters"
-	"github.com/danilashushkanov/student/internal/model"
-	api "github.com/danilashushkanov/student/pkg/studentServiceApi"
+	"github.com/danilashushkanov/student-service/internal/app/studentservice/adapters"
+	"github.com/danilashushkanov/student-service/internal/model"
+	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -15,8 +16,9 @@ func TestUpdateStudent(t *testing.T) {
 	t.Run("validate error", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
 		req := &api.UpdateStudentRequest{
-			Id:       0,
+			Id:       studentID,
 			FullName: "",
 			Age:      0,
 			Salary:   0,
@@ -32,8 +34,9 @@ func TestUpdateStudent(t *testing.T) {
 	t.Run("repository error", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
 		req := &api.UpdateStudentRequest{
-			Id:       1,
+			Id:       studentID,
 			FullName: "Паша Жирнов",
 			Age:      13,
 			Salary:   123456,
@@ -52,8 +55,9 @@ func TestUpdateStudent(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		te := newTestEnv(t)
 
+		studentID := uuid.New().String()
 		req := &api.UpdateStudentRequest{
-			Id:       1,
+			Id:       studentID,
 			FullName: "Паша Жирнов",
 			Age:      13,
 			Salary:   123456,
@@ -61,7 +65,7 @@ func TestUpdateStudent(t *testing.T) {
 
 		expectedMockStudent := adapters.UpdateStudentFromPb(req)
 		modelStudent := &model.Student{
-			ID:       17,
+			ID:       studentID,
 			FullName: "name",
 			Age:      12,
 			Salary:   123123,
