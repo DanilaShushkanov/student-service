@@ -35,7 +35,7 @@ func validateCreateStudentRequest(req *api.CreateStudentRequest) error {
 	}
 
 	for _, teacher := range req.GetTeachers() {
-		err = teacherservice.ValidateCreateTeacherRequest(teacher)
+		err = teacherservice.ValidateCreateTeacherRequest(teacher, false)
 		if err != nil {
 			return err
 		}

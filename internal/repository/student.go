@@ -247,7 +247,8 @@ func (s *StudentRepositoryImpl) Delete(ctx context.Context, studentID string) er
 	}()
 
 	query, _, err := goqu.Delete(studentTName).Where(
-		goqu.I("id").Eq(studentID)).ToSQL()
+		goqu.I("id").Eq(studentID),
+	).ToSQL()
 	if err != nil {
 		return fmt.Errorf("не удалось создать Delete Student: %w", err)
 	}

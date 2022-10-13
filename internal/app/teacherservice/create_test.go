@@ -134,7 +134,7 @@ func TestValidateCreateTeacherRequest(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			err := ValidateCreateTeacherRequest(test.args.req)
+			err := ValidateCreateTeacherRequest(test.args.req, true)
 			if !assert.Error(t, err, "error expected") {
 				assert.FailNow(t, "error expected")
 			}

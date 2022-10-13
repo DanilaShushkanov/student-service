@@ -12,7 +12,7 @@ import (
 )
 
 func (s *Service) CreateTeacher(ctx context.Context, req *api.CreateTeacherRequest) (*api.Teacher, error) {
-	if err := ValidateCreateTeacherRequest(req); err != nil {
+	if err := ValidateCreateTeacherRequest(req, true); err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
@@ -25,13 +25,17 @@ func (s *Service) CreateTeacher(ctx context.Context, req *api.CreateTeacherReque
 	return adapters.TeacherToPb(teachers[len(teachers)-1:][0]), nil
 }
 
-func ValidateCreateTeacherRequest(req *api.CreateTeacherRequest) error {
-	err := validation.Errors{
+func ValidateCreateTeacherRequest(req *api.CreateTeacherRequest, checkStudentId bool) error {
+	checkMap := validation.Errors{
 		"full_name":     validation.Validate(strings.TrimSpace(req.GetFullName()), validation.Required, validation.Length(1, 0)),
 		"position_type": validation.Validate(req.GetPositionType(), positionTypeValidationRule),
-		"student_id":    validation.Validate(req.GetStudentId(), validation.Required),
-	}.Filter()
-	if err != nil {
+	}
+
+	if checkStudentId {
+		checkMap["student_id"] = validation.Validate(req.GetStudentId(), validation.Required)
+	}
+
+	if err := checkMap.Filter(); err != nil {
 		return err
 	}
 	return nil
