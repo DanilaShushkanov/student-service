@@ -25,13 +25,13 @@ func (s *Service) CreateTeacher(ctx context.Context, req *api.CreateTeacherReque
 	return adapters.TeacherToPb(teachers[len(teachers)-1:][0]), nil
 }
 
-func ValidateCreateTeacherRequest(req *api.CreateTeacherRequest, checkStudentId bool) error {
+func ValidateCreateTeacherRequest(req *api.CreateTeacherRequest, checkStudentID bool) error {
 	checkMap := validation.Errors{
 		"full_name":     validation.Validate(strings.TrimSpace(req.GetFullName()), validation.Required, validation.Length(1, 0)),
 		"position_type": validation.Validate(req.GetPositionType(), positionTypeValidationRule),
 	}
 
-	if checkStudentId {
+	if checkStudentID {
 		checkMap["student_id"] = validation.Validate(req.GetStudentId(), validation.Required)
 	}
 
