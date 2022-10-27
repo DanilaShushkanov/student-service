@@ -16,6 +16,7 @@ func (s *Service) GetStudent(ctx context.Context, req *api.GetStudentRequest) (*
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
+	s.logger.Info("get student")
 	student, err := s.studentRepository.Get(ctx, req.GetId())
 	if err != nil {
 		if errors.Is(err, repository.ErrEntityNotFound) {

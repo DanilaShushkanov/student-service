@@ -14,6 +14,7 @@ func (s *Service) ListTeachers(ctx context.Context, req *api.ListTeacherRequest)
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
+	s.logger.Info("list teacher")
 	teacherList, err := s.teacherRepository.List(ctx, adapters.ListFilterTeacherFromPb(req))
 	if err != nil {
 		return nil, status.Error(codes.Internal, "error list teacher")

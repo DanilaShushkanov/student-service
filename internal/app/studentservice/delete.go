@@ -12,6 +12,7 @@ func (s *Service) DeleteStudent(ctx context.Context, req *api.GetStudentRequest)
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
+	s.logger.Info("delete student")
 	err := s.studentRepository.Delete(ctx, req.GetId())
 	if err != nil {
 		return nil, status.Error(codes.Internal, "error delete student")

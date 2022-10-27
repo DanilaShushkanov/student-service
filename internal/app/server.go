@@ -9,31 +9,32 @@ import (
 	"github.com/danilashushkanov/student-service/internal/closer"
 	"github.com/danilashushkanov/student-service/internal/config"
 	"github.com/danilashushkanov/student-service/internal/repository"
+	"github.com/danilashushkanov/student-service/pkg/logging"
 	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	"google.golang.org/grpc"
-	"log"
 	"net"
 	"os"
 	"os/signal"
 	"syscall"
 )
 
-func Run(ctx context.Context, cfg *config.Config) error {
+func Run(ctx context.Context, cfg *config.Config, logger logging.Logger) error {
 	s := grpc.NewServer()
 
 	_, cancel := context.WithCancel(ctx)
 
+	logger.Infof("listen GRPC server to %s", cfg.GRPCAddr)
 	l, err := net.Listen("tcp", cfg.GRPCAddr)
 	if err != nil {
 		cancel()
-		log.Printf("failed to listen tcp %s, %v\n", cfg.GRPCAddr, err)
+		logger.Fatalf("failed to listen tcp %s, %v\n", cfg.GRPCAddr, err)
 	}
 
-	initServices(s, cfg)
+	initServices(s, cfg, logger)
 
 	go func() {
 		if err = s.Serve(l); err != nil {
-			log.Println("ERROR: ", err.Error())
+			logger.Fatal("ERROR: ", err.Error())
 		}
 	}()
 
@@ -41,19 +42,27 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	return nil
 }
 
-func initServices(s *grpc.Server, cfg *config.Config) {
+func initServices(s *grpc.Server, cfg *config.Config, logger logging.Logger) {
+	logger.Info("start connect to DB")
 	conn, err := bootstrap.InitDB(cfg)
 	if err != nil {
-		log.Fatalf("not connect to db :%v", err)
+		logger.Fatalf("not connect to db :%v", err)
 	}
 
+	logger.Info("register services")
 	api.RegisterStudentServiceServer(s, studentservice.NewService(
 		repository.NewStudentRepository(
 			conn,
 			repository.NewTeacherRepository(conn),
-		)),
+		),
+		logger,
+	),
 	)
-	api.RegisterTeacherServiceServer(s, teacherservice.NewService(repository.NewTeacherRepository(conn)))
+	api.RegisterTeacherServiceServer(s, teacherservice.NewService(
+		repository.NewTeacherRepository(conn),
+		logger,
+	),
+	)
 }
 
 func gracefulShutdown(s *grpc.Server, cancel context.CancelFunc) {

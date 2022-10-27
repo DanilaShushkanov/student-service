@@ -15,6 +15,8 @@ func (s *Service) PatchStudent(ctx context.Context, req *api.UpdateStudentReques
 	if err := validateUpdateStudentRequest(req); err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
+
+	s.logger.Info("update student")
 	student, err := s.studentRepository.Update(ctx, adapters.UpdateStudentFromPb(req))
 	if err != nil {
 		return nil, status.Error(codes.Internal, "error update student")

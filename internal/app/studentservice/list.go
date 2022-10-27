@@ -14,6 +14,7 @@ func (s *Service) ListStudents(ctx context.Context, req *api.ListStudentRequest)
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
+	s.logger.Info("list student")
 	studentList, err := s.studentRepository.List(ctx, adapters.ListFilterStudentFromPb(req))
 	if err != nil {
 		return nil, status.Error(codes.Internal, "error list student")

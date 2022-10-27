@@ -16,6 +16,7 @@ func (s *Service) CreateTeacher(ctx context.Context, req *api.CreateTeacherReque
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
+	s.logger.Info("create teacher")
 	modelTeacher := adapters.CreateTeacherFromPb(req)
 	teachers, err := s.teacherRepository.Create(ctx, []*model.Teacher{modelTeacher})
 	if err != nil {

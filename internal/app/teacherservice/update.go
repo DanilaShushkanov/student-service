@@ -15,6 +15,7 @@ func (s *Service) PatchTeacher(ctx context.Context, req *api.UpdateTeacherReques
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
+	s.logger.Info("update teacher")
 	teacher, err := s.teacherRepository.Update(ctx, adapters.UpdateTeacherFromPb(req))
 	if err != nil {
 		return nil, status.Error(codes.Internal, "error update teacher")

@@ -16,6 +16,7 @@ func (s *Service) CreateStudent(ctx context.Context, req *api.CreateStudentReque
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
+	s.logger.Info("create student")
 	student, err := s.studentRepository.Create(ctx, adapters.CreateStudentFromPb(req))
 	if err != nil {
 		return nil, status.Error(codes.Internal, "error create student")
