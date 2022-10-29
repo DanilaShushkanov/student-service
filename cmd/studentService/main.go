@@ -27,7 +27,7 @@ func main() {
 	}
 
 	logger.Info("run application")
-	if err := app.Run(context.Background(), cfg, logger); err != nil {
+	if err := app.Run(ctx, cfg, logger); err != nil {
 		logger.Fatal("error running grpc server ", err)
 	}
 }
