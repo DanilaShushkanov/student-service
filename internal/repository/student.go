@@ -6,9 +6,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/danilashushkanov/student-service/internal/model"
+	"github.com/danilashushkanov/student-service/pkg/logging"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/jmoiron/sqlx"
-	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -36,7 +36,7 @@ func (s *StudentRepositoryImpl) Create(ctx context.Context, student *model.Stude
 	defer func() {
 		if err != nil {
 			if rollbackErr := tx.Rollback(); rollbackErr != nil {
-				log.WithContext(ctx).WithField("err", rollbackErr).Error("не удалось выполнить Rollback Student")
+				logging.GetLogger(ctx).WithContext(ctx).WithField("err", rollbackErr).Error("не удалось выполнить Rollback Student")
 			}
 			return
 		}
@@ -112,7 +112,7 @@ func (s *StudentRepositoryImpl) List(ctx context.Context, filter *StudentListFil
 	}
 
 	if err = s.loadNestedObjects(ctx, studentList); err != nil {
-		return nil, fmt.Errorf("ошибкак при загрузке вложенных объектов: %w", err)
+		return nil, fmt.Errorf("ошибка при загрузке вложенных объектов: %w", err)
 	}
 
 	return studentList, nil
@@ -184,7 +184,7 @@ func (s *StudentRepositoryImpl) Update(ctx context.Context, student *model.Stude
 	defer func() {
 		if err != nil {
 			if rollbackErr := tx.Rollback(); rollbackErr != nil {
-				log.WithContext(ctx).WithField("err", rollbackErr).Error("не удалось выполнить Rollback Update Student")
+				logging.GetLogger(ctx).WithContext(ctx).WithField("err", rollbackErr).Error("не удалось выполнить Rollback Update Student")
 			}
 			return
 		}
@@ -240,7 +240,7 @@ func (s *StudentRepositoryImpl) Delete(ctx context.Context, studentID string) er
 	defer func() {
 		if err != nil {
 			if rollbackErr := tx.Rollback(); rollbackErr != nil {
-				log.WithContext(ctx).WithField("err", rollbackErr).Error("не удалось выполнить Rollback Student")
+				logging.GetLogger(ctx).WithContext(ctx).WithField("err", rollbackErr).Error("не удалось выполнить Rollback Student")
 			}
 			return
 		}

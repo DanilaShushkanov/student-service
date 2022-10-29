@@ -15,6 +15,10 @@ type logger struct {
 	*logrus.Logger
 }
 
+func GetLogger(ctx context.Context) Logger {
+	return loggerFromContext(ctx)
+}
+
 func NewLogger() Logger {
 	logrusLogger := logrus.New()
 	logrusLogger.SetReportCaller(true)

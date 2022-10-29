@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/danilashushkanov/student-service/internal/app/studentservice/adapters"
 	"github.com/danilashushkanov/student-service/internal/repository"
+	"github.com/danilashushkanov/student-service/pkg/logging"
 	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"google.golang.org/grpc/codes"
@@ -16,7 +17,7 @@ func (s *Service) GetStudent(ctx context.Context, req *api.GetStudentRequest) (*
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	s.logger.Info("get student")
+	logging.GetLogger(ctx).Info("get student")
 	student, err := s.studentRepository.Get(ctx, req.GetId())
 	if err != nil {
 		if errors.Is(err, repository.ErrEntityNotFound) {

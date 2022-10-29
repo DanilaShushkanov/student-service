@@ -3,6 +3,7 @@ package teacherservice
 import (
 	"context"
 	"github.com/danilashushkanov/student-service/internal/app/teacherservice/adapters"
+	"github.com/danilashushkanov/student-service/pkg/logging"
 	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"google.golang.org/grpc/codes"
@@ -15,7 +16,7 @@ func (s *Service) PatchTeacher(ctx context.Context, req *api.UpdateTeacherReques
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	s.logger.Info("update teacher")
+	logging.GetLogger(ctx).Info("update teacher")
 	teacher, err := s.teacherRepository.Update(ctx, adapters.UpdateTeacherFromPb(req))
 	if err != nil {
 		return nil, status.Error(codes.Internal, "error update teacher")

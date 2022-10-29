@@ -6,9 +6,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/danilashushkanov/student-service/internal/model"
+	"github.com/danilashushkanov/student-service/pkg/logging"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/jmoiron/sqlx"
-	log "github.com/sirupsen/logrus"
 )
 
 const teacherTName = "teacher"
@@ -51,7 +51,7 @@ func (t *TeacherRepositoryImpl) Create(ctx context.Context, teachers []*model.Te
 	defer func() {
 		if err != nil {
 			if rollbackErr := tx.Rollback(); rollbackErr != nil {
-				log.WithContext(ctx).WithField("err", rollbackErr).Error("не удалось выполнить Rollback teacher")
+				logging.GetLogger(ctx).WithContext(ctx).WithField("err", rollbackErr).Error("не удалось выполнить Rollback teacher")
 			}
 			return
 		}
@@ -102,7 +102,7 @@ func (t *TeacherRepositoryImpl) Update(ctx context.Context, teacher *model.Teach
 	defer func() {
 		if err != nil {
 			if rollbackErr := tx.Rollback(); rollbackErr != nil {
-				log.WithContext(ctx).WithField("err", rollbackErr).Error("не удалось выполнить Rollback teacher")
+				logging.GetLogger(ctx).WithContext(ctx).WithField("err", rollbackErr).Error("не удалось выполнить Rollback teacher")
 			}
 			return
 		}
@@ -157,7 +157,7 @@ func (t *TeacherRepositoryImpl) DeleteByStudentID(ctx context.Context, studentID
 	defer func() {
 		if err != nil {
 			if rollbackErr := tx.Rollback(); rollbackErr != nil {
-				log.WithContext(ctx).WithField("err", rollbackErr).Error("не удалось выполнить Rollback teacher")
+				logging.GetLogger(ctx).WithContext(ctx).WithField("err", rollbackErr).Error("не удалось выполнить Rollback teacher")
 			}
 			return
 		}

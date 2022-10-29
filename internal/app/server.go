@@ -21,20 +21,21 @@ import (
 func Run(ctx context.Context, cfg *config.Config, logger logging.Logger) error {
 	s := grpc.NewServer()
 
-	_, cancel := context.WithCancel(ctx)
+	ctx, cancel := context.WithCancel(ctx)
+	ctx = logging.ContextWithLogger(ctx, logger)
 
-	logger.Infof("listen GRPC server to %s", cfg.GRPCAddr)
+	logging.GetLogger(ctx).Infof("listen GRPC server to %s", cfg.GRPCAddr)
 	l, err := net.Listen("tcp", cfg.GRPCAddr)
 	if err != nil {
 		cancel()
-		logger.Fatalf("failed to listen tcp %s, %v\n", cfg.GRPCAddr, err)
+		logging.GetLogger(ctx).Fatalf("failed to listen tcp %s, %v\n", cfg.GRPCAddr, err)
 	}
 
-	initServices(s, cfg, logger)
+	initServices(ctx, s, cfg)
 
 	go func() {
 		if err = s.Serve(l); err != nil {
-			logger.Fatal("ERROR: ", err.Error())
+			logging.GetLogger(ctx).Fatal("ERROR: ", err.Error())
 		}
 	}()
 
@@ -42,25 +43,23 @@ func Run(ctx context.Context, cfg *config.Config, logger logging.Logger) error {
 	return nil
 }
 
-func initServices(s *grpc.Server, cfg *config.Config, logger logging.Logger) {
-	logger.Info("start connect to DB")
+func initServices(ctx context.Context, s *grpc.Server, cfg *config.Config) {
+	logging.GetLogger(ctx).Info("start connect to DB")
 	conn, err := bootstrap.InitDB(cfg)
 	if err != nil {
-		logger.Fatalf("not connect to db :%v", err)
+		logging.GetLogger(ctx).Fatalf("not connect to db :%v", err)
 	}
 
-	logger.Info("register services")
+	logging.GetLogger(ctx).Info("register services")
 	api.RegisterStudentServiceServer(s, studentservice.NewService(
 		repository.NewStudentRepository(
 			conn,
 			repository.NewTeacherRepository(conn),
 		),
-		logger,
 	),
 	)
 	api.RegisterTeacherServiceServer(s, teacherservice.NewService(
 		repository.NewTeacherRepository(conn),
-		logger,
 	),
 	)
 }

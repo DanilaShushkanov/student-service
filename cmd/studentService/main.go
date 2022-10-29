@@ -10,7 +10,8 @@ import (
 )
 
 func main() {
-	logger := logging.NewLogger()
+	ctx := context.Background()
+	logger := logging.GetLogger(ctx)
 	logger.Info("start application")
 
 	logger.Info("start parsing environments")

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/danilashushkanov/student-service/internal/app/studentservice/adapters"
 	"github.com/danilashushkanov/student-service/internal/app/teacherservice"
+	"github.com/danilashushkanov/student-service/pkg/logging"
 	api "github.com/danilashushkanov/student-service/pkg/studentServiceApi"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"google.golang.org/grpc/codes"
@@ -16,7 +17,7 @@ func (s *Service) CreateStudent(ctx context.Context, req *api.CreateStudentReque
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	s.logger.Info("create student")
+	logging.GetLogger(ctx).Info("create student")
 	student, err := s.studentRepository.Create(ctx, adapters.CreateStudentFromPb(req))
 	if err != nil {
 		return nil, status.Error(codes.Internal, "error create student")
