@@ -24,11 +24,11 @@ func Run(ctx context.Context, cfg *config.Config, logger logging.Logger) error {
 	ctx, cancel := context.WithCancel(ctx)
 	ctx = logging.ContextWithLogger(ctx, logger)
 
-	logging.GetLogger(ctx).Infof("listen GRPC server to %s", cfg.GRPCAddr)
-	l, err := net.Listen("tcp", cfg.GRPCAddr)
+	logging.GetLogger(ctx).Infof("listen GRPC server to %s", cfg.Ports.GRPC)
+	l, err := net.Listen("tcp", cfg.Ports.GRPC)
 	if err != nil {
 		cancel()
-		logging.GetLogger(ctx).Fatalf("failed to listen tcp %s, %v\n", cfg.GRPCAddr, err)
+		logging.GetLogger(ctx).Fatalf("failed to listen tcp %s, %v\n", cfg.Ports.GRPC, err)
 	}
 
 	initServices(ctx, s, cfg)
