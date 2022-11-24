@@ -3,7 +3,6 @@ package teacherservice
 import (
 	"context"
 	"github.com/danilashushkanov/student-service/internal/repository"
-	"github.com/danilashushkanov/student-service/pkg/logging"
 	"github.com/golang/mock/gomock"
 	"testing"
 )
@@ -24,6 +23,6 @@ func newTestEnv(t *testing.T) *testEnv {
 
 	tEnv.teacherRepository = repository.NewMockTeacherRepository(tEnv.ctrl)
 
-	tEnv.teacherService = NewService(tEnv.teacherRepository, logging.NewLogger())
+	tEnv.teacherService = NewService(tEnv.teacherRepository)
 	return tEnv
 }
